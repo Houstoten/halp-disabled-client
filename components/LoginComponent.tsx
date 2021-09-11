@@ -8,7 +8,7 @@ export const LoginComponent = () => {
     const [loadMe, { data: me }] = useMeLazyQuery()
 
     useEffect(() => {
-        loadMe()
+        data && loadMe()
     }, [data])
 
     useEffect(() => {
