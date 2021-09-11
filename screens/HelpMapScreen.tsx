@@ -10,7 +10,7 @@ import {
     useUpdatePositionMutation,
 } from '../graphql/generated/graphql'
 
-export default function TabTwoScreen() {
+export default function HelpMapScreen() {
     const { data } = useMeQuery()
     const [updateLocation] = useUpdatePositionMutation()
     const colorMode = useColorScheme()

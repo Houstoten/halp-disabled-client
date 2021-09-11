@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { StyleSheet } from 'react-native'
+import { LogoutButton } from '../components/LogoutButton'
 import { View } from '../components/Themed'
-import { LogoutButton } from '../navigation/LoginScreen'
 import { RootTabScreenProps } from '../types'
 
 export default function AccountScreen({

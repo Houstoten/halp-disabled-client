@@ -1,7 +1,7 @@
 import React from 'react'
 import { SocialIcon } from 'react-native-elements'
 
-export const LoginComponent = ({
+export const LoginButton = ({
     onClick,
     loading,
 }: {
