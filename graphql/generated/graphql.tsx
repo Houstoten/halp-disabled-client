@@ -27,13 +27,13 @@ export type AuthResponse = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  logIn: AuthResponse;
+  login: AuthResponse;
   refreshTokens: AuthResponse;
-  signOut: AuthResponse;
+  signout: AuthResponse;
 };
 
 
-export type MutationLogInArgs = {
+export type MutationLoginArgs = {
   input: AuthArgs;
 };
 
@@ -104,18 +104,12 @@ export type LoginMutationVariables = Exact<{
 }>;
 
 
-export type LoginMutation = (
-  { __typename?: 'Mutation' }
-  & { logIn: (
-    { __typename?: 'AuthResponse' }
-    & Pick<AuthResponse, 'success'>
-  ) }
-);
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'AuthResponse', success: boolean } };
 
 
 export const LoginDocument = gql`
     mutation login($logInInput: AuthArgs!) {
-  logIn(input: $logInInput) {
+  login(input: $logInInput) {
     success
   }
 }
