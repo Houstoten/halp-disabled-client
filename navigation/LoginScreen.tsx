@@ -1,14 +1,31 @@
+import { useApolloClient } from '@apollo/client'
 import * as Google from 'expo-google-app-auth'
 import * as React from 'react'
 import { StyleSheet } from 'react-native'
+import { Button } from 'react-native-elements'
 import { LoginComponent } from '../components/LoginComponent'
 import { View } from '../components/Themed'
-import { useLoginMutation } from '../graphql/generated/graphql'
+import {
+    useLoginMutation,
+    useLogoutMutation,
+} from '../graphql/generated/graphql'
+
+export function LogoutButton() {
+    const [logout, { loading }] = useLogoutMutation()
+    const client = useApolloClient()
+
+    return (
+        <Button
+            loading={loading}
+            style={{ width: 120 }}
+            title="Logout"
+            onPress={() => logout()}
+        />
+    )
+}
 
 export default function LoginScreen() {
     const [login, { loading, data }] = useLoginMutation()
-
-    console.log({ data228: data })
 
     const onLoginClick = async () => {
         const { accessToken, refreshToken, idToken }: any =
@@ -22,6 +39,7 @@ export default function LoginScreen() {
             variables: {
                 loginInput: { accessToken, refreshToken, idToken },
             },
+            refetchQueries: ['me'],
         })
     }
 

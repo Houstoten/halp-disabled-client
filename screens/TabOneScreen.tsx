@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { StyleSheet } from 'react-native'
-import EditScreenInfo from '../components/EditScreenInfo'
 import { View } from '../components/Themed'
+import { LogoutButton } from '../navigation/LoginScreen'
 import { RootTabScreenProps } from '../types'
 
 export default function TabOneScreen({
@@ -14,7 +14,7 @@ export default function TabOneScreen({
                 lightColor="#eee"
                 darkColor="rgba(255,255,255,0.1)"
             />
-            <EditScreenInfo path="/screens/TabOneScreen.tsx" />
+            <LogoutButton />
         </View>
     )
 }
