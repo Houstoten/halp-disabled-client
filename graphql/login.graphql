@@ -1,5 +1,5 @@
-mutation login($logInInput: AuthArgs!) {
-  login(input: $logInInput) {
-    success
-  }
+mutation login($loginInput: AuthArgs!) {
+    login(input: $loginInput) {
+        success
+    }
 }
