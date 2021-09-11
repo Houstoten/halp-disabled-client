@@ -7,7 +7,7 @@
     "web": "expo start --web",
     "eject": "expo eject",
     "test": "jest --watchAll",
-    "codegen": "graphql-codegen --config ./codegen.yml"
+    "gen": "graphql-codegen --config codegen.yml"
   },
   "jest": {
     "preset": "jest-expo"
@@ -31,7 +31,6 @@
     "expo-status-bar": "~1.0.4",
     "expo-web-browser": "~9.2.0",
     "graphql": "^15.5.3",
-    "graphql-codegen": "^0.4.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz",
