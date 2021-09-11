@@ -63,7 +63,7 @@ function RootNavigator() {
         )
     }
 
-    const isLogged = Boolean(data?.me)
+    const isLogged = Boolean(data?.me?.id)
 
     return (
         <Stack.Navigator>

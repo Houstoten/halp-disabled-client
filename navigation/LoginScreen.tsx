@@ -1,4 +1,3 @@
-import { useApolloClient } from '@apollo/client'
 import * as Google from 'expo-google-app-auth'
 import * as React from 'react'
 import { StyleSheet } from 'react-native'
@@ -12,14 +11,13 @@ import {
 
 export function LogoutButton() {
     const [logout, { loading }] = useLogoutMutation()
-    const client = useApolloClient()
 
     return (
         <Button
             loading={loading}
             style={{ width: 120 }}
             title="Logout"
-            onPress={() => logout()}
+            onPress={() => logout({ refetchQueries: ['me'] })}
         />
     )
 }
