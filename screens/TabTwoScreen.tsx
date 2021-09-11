@@ -2,28 +2,38 @@ import * as Location from 'expo-location'
 import * as React from 'react'
 import { useEffect } from 'react'
 import { StyleSheet, useColorScheme } from 'react-native'
-import { Button } from 'react-native-elements'
+import { FAB } from 'react-native-elements'
 import MapView from 'react-native-maps'
 import { View } from '../components/Themed'
-import { useUpdatePositionMutation } from '../graphql/generated/graphql'
+import {
+    useMeQuery,
+    useUpdatePositionMutation,
+} from '../graphql/generated/graphql'
 
 export default function TabTwoScreen() {
-    const [updateLocation, { data }] = useUpdatePositionMutation()
+    const { data } = useMeQuery()
+    const [updateLocation] = useUpdatePositionMutation()
     const colorMode = useColorScheme()
 
     useEffect(() => {
         Location.requestForegroundPermissionsAsync()
     }, [])
 
+    if (!data?.me) {
+        return <View style={styles.container} />
+    }
+
+    const isDisabledUser = data.me.is_disabled
+
     return (
-        <View style={StyleSheet.absoluteFillObject}>
+        <View style={styles.container}>
             <MapView
                 loadingEnabled
                 followsUserLocation
                 showsUserLocation
                 showsMyLocationButton
                 userInterfaceStyle={colorMode === 'dark' ? 'dark' : 'light'}
-                style={StyleSheet.absoluteFillObject}
+                style={StyleSheet.absoluteFill}
                 onUserLocationChange={(location) => {
                     const { latitude, longitude } =
                         location.nativeEvent.coordinate
@@ -34,24 +44,32 @@ export default function TabTwoScreen() {
                         },
                     })
                 }}
-            ></MapView>
-            <Button style={styles.helpButton}>Help</Button>
+            />
+
+            {isDisabledUser && (
+                <FAB
+                    title="Help"
+                    placement="right"
+                    color="red"
+                    containerStyle={{ width: '100%' }}
+                    titleStyle={{
+                        color: 'white',
+                        fontWeight: 'bold',
+                        fontSize: 25,
+                    }}
+                    buttonStyle={{
+                        height: 55,
+                    }}
+                />
+            )}
         </View>
     )
 }
 const styles = StyleSheet.create({
-    absoluteFill: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: 0,
-    },
     helpButton: {
-        height: 100,
-        width: 100,
-        position: 'absolute',
-        bottom: 500,
-        right: 500,
+        color: 'white',
+    },
+    container: {
+        flex: 1,
     },
 })

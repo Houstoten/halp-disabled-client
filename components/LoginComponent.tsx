@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button } from 'react-native-elements'
+import { SocialIcon } from 'react-native-elements'
 
 export const LoginComponent = ({
     onClick,
@@ -9,10 +9,13 @@ export const LoginComponent = ({
     loading: boolean
 }) => {
     return (
-        <Button
+        <SocialIcon
+            button
             loading={loading}
-            style={{ width: 120 }}
-            title="Google login"
+            type="google"
+            title="Signin with Google"
+            fontStyle={{ fontSize: 16 }}
+            style={{ width: 220 }}
             onPress={onClick}
         />
     )
