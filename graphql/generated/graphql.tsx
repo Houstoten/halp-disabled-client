@@ -127,12 +127,12 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', id: string, name: string, avatar: string, is_disabled: boolean } };
 
-export type MutationMutationVariables = Exact<{
+export type UpdatePositionMutationVariables = Exact<{
   updatePositionInput: PositionArgs;
 }>;
 
 
-export type MutationMutation = { __typename?: 'Mutation', updatePosition: { __typename?: 'SuccessResponse', success: boolean } };
+export type UpdatePositionMutation = { __typename?: 'Mutation', updatePosition: { __typename?: 'SuccessResponse', success: boolean } };
 
 
 export const LoginDocument = gql`
@@ -237,36 +237,36 @@ export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
-export const MutationDocument = gql`
-    mutation Mutation($updatePositionInput: PositionArgs!) {
+export const UpdatePositionDocument = gql`
+    mutation updatePosition($updatePositionInput: PositionArgs!) {
   updatePosition(input: $updatePositionInput) {
     success
   }
 }
     `;
-export type MutationMutationFn = Apollo.MutationFunction<MutationMutation, MutationMutationVariables>;
+export type UpdatePositionMutationFn = Apollo.MutationFunction<UpdatePositionMutation, UpdatePositionMutationVariables>;
 
 /**
- * __useMutationMutation__
+ * __useUpdatePositionMutation__
  *
- * To run a mutation, you first call `useMutationMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useMutationMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useUpdatePositionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdatePositionMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [mutationMutation, { data, loading, error }] = useMutationMutation({
+ * const [updatePositionMutation, { data, loading, error }] = useUpdatePositionMutation({
  *   variables: {
  *      updatePositionInput: // value for 'updatePositionInput'
  *   },
  * });
  */
-export function useMutationMutation(baseOptions?: Apollo.MutationHookOptions<MutationMutation, MutationMutationVariables>) {
+export function useUpdatePositionMutation(baseOptions?: Apollo.MutationHookOptions<UpdatePositionMutation, UpdatePositionMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<MutationMutation, MutationMutationVariables>(MutationDocument, options);
+        return Apollo.useMutation<UpdatePositionMutation, UpdatePositionMutationVariables>(UpdatePositionDocument, options);
       }
-export type MutationMutationHookResult = ReturnType<typeof useMutationMutation>;
-export type MutationMutationResult = Apollo.MutationResult<MutationMutation>;
-export type MutationMutationOptions = Apollo.BaseMutationOptions<MutationMutation, MutationMutationVariables>;
+export type UpdatePositionMutationHookResult = ReturnType<typeof useUpdatePositionMutation>;
+export type UpdatePositionMutationResult = Apollo.MutationResult<UpdatePositionMutation>;
+export type UpdatePositionMutationOptions = Apollo.BaseMutationOptions<UpdatePositionMutation, UpdatePositionMutationVariables>;

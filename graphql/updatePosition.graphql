@@ -1,4 +1,4 @@
-mutation Mutation($updatePositionInput: PositionArgs!) {
+mutation updatePosition($updatePositionInput: PositionArgs!) {
     updatePosition(input: $updatePositionInput) {
         success
     }
