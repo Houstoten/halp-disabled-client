@@ -27,13 +27,13 @@ export type AuthResponse = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  logIn: AuthResponse;
+  login: AuthResponse;
   refreshTokens: AuthResponse;
-  signOut: AuthResponse;
+  signout: AuthResponse;
 };
 
 
-export type MutationLogInArgs = {
+export type MutationLoginArgs = {
   input: AuthArgs;
 };
 
@@ -100,13 +100,13 @@ export type UserUpdateResponse = {
 };
 
 export type LoginMutationVariables = Exact<{
-  logInInput: AuthArgs;
+  loginInput: AuthArgs;
 }>;
 
 
 export type LoginMutation = (
   { __typename?: 'Mutation' }
-  & { logIn: (
+  & { login: (
     { __typename?: 'AuthResponse' }
     & Pick<AuthResponse, 'success'>
   ) }
@@ -114,8 +114,8 @@ export type LoginMutation = (
 
 
 export const LoginDocument = gql`
-    mutation login($logInInput: AuthArgs!) {
-  logIn(input: $logInInput) {
+    mutation login($loginInput: AuthArgs!) {
+  login(input: $loginInput) {
     success
   }
 }
@@ -135,7 +135,7 @@ export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutati
  * @example
  * const [loginMutation, { data, loading, error }] = useLoginMutation({
  *   variables: {
- *      logInInput: // value for 'logInInput'
+ *      loginInput: // value for 'loginInput'
  *   },
  * });
  */

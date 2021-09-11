@@ -18,7 +18,7 @@ export const LoginComponent = () => {
           });
 
         login({
-          variables: { logInInput: { accessToken, refreshToken, idToken } },
+          variables: { loginInput: { accessToken, refreshToken, idToken } },
         });
       }}
     />
