@@ -1,8 +1,8 @@
 overwrite: true
 schema: "http://192.168.0.220:3001/graphql"
-documents: "src/**/*.graphql"
+documents: "./**/*.graphql"
 generates:
-  src/generated/graphql.tsx:
+  ./graphql/generated/graphql.tsx:
     config:
       withHooks: true
     plugins:

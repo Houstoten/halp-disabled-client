@@ -7,7 +7,7 @@ import useColorScheme from "./hooks/useColorScheme";
 import Navigation from "./navigation";
 
 const client = new ApolloClient({
-  uri: "192.168.0.220:3001/graphql",
+  uri: "http://192.168.0.220:3001/graphql",
   cache: new InMemoryCache(),
 });
 

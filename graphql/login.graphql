@@ -1,0 +1,5 @@
+mutation login($logInInput: AuthArgs!) {
+  logIn(input: $logInInput) {
+    success
+  }
+}
