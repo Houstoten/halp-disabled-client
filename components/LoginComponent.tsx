@@ -1,36 +1,19 @@
-import * as Google from 'expo-google-app-auth'
-import React, { useEffect } from 'react'
-import { Button } from 'react-native'
-import { useLoginMutation, useMeLazyQuery } from '../graphql/generated/graphql'
+import React from 'react'
+import { Button } from 'react-native-elements'
 
-export const LoginComponent = () => {
-    const [login, { loading, data, error }] = useLoginMutation()
-    const [loadMe, { data: me }] = useMeLazyQuery()
-
-    useEffect(() => {
-        data && loadMe()
-    }, [data])
-
-    useEffect(() => {
-        console.log(me)
-    }, [me])
+export const LoginComponent = ({
+    onClick,
+    loading,
+}: {
+    onClick: () => void
+    loading: boolean
+}) => {
     return (
         <Button
+            loading={loading}
+            style={{ width: 120 }}
             title="Google login"
-            onPress={async () => {
-                const { accessToken, refreshToken, idToken }: any =
-                    await Google.logInAsync({
-                        clientId:
-                            '265204013790-b59b6kqoj0j5d4cme3pqd94bvfosudr0.apps.googleusercontent.com',
-                        scopes: ['profile'],
-                    })
-
-                login({
-                    variables: {
-                        loginInput: { accessToken, refreshToken, idToken },
-                    },
-                })
-            }}
+            onPress={onClick}
         />
     )
 }
