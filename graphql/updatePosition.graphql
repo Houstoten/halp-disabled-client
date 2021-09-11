@@ -1,0 +1,5 @@
+mutation Mutation($updatePositionInput: PositionArgs!) {
+    updatePosition(input: $updatePositionInput) {
+        success
+    }
+}

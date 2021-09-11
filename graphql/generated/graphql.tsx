@@ -20,21 +20,27 @@ export type AuthArgs = {
   refreshToken: Scalars['String'];
 };
 
-export type AuthResponse = {
-  __typename?: 'AuthResponse';
-  success: Scalars['Boolean'];
-};
-
 export type Mutation = {
   __typename?: 'Mutation';
-  login: AuthResponse;
-  logout: AuthResponse;
-  refreshTokens: AuthResponse;
+  login: SuccessResponse;
+  logout: SuccessResponse;
+  refreshTokens: SuccessResponse;
+  updatePosition: SuccessResponse;
 };
 
 
 export type MutationLoginArgs = {
   input: AuthArgs;
+};
+
+
+export type MutationUpdatePositionArgs = {
+  input: PositionArgs;
+};
+
+export type PositionArgs = {
+  latitude: Scalars['Float'];
+  longitude: Scalars['Float'];
 };
 
 export type Query = {
@@ -57,6 +63,11 @@ export type Subscription = {
 
 export type SubscriptionUpdateNearestDataArgs = {
   input: TrackedUsersArgs;
+};
+
+export type SuccessResponse = {
+  __typename?: 'SuccessResponse';
+  success: Scalars['Boolean'];
 };
 
 export type TrackedUsersArgs = {
@@ -104,17 +115,24 @@ export type LoginMutationVariables = Exact<{
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'AuthResponse', success: boolean } };
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'SuccessResponse', success: boolean } };
 
 export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
 
-export type LogoutMutation = { __typename?: 'Mutation', logout: { __typename?: 'AuthResponse', success: boolean } };
+export type LogoutMutation = { __typename?: 'Mutation', logout: { __typename?: 'SuccessResponse', success: boolean } };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', id: string, name: string, avatar: string, is_disabled: boolean } };
+
+export type MutationMutationVariables = Exact<{
+  updatePositionInput: PositionArgs;
+}>;
+
+
+export type MutationMutation = { __typename?: 'Mutation', updatePosition: { __typename?: 'SuccessResponse', success: boolean } };
 
 
 export const LoginDocument = gql`
@@ -219,3 +237,36 @@ export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
+export const MutationDocument = gql`
+    mutation Mutation($updatePositionInput: PositionArgs!) {
+  updatePosition(input: $updatePositionInput) {
+    success
+  }
+}
+    `;
+export type MutationMutationFn = Apollo.MutationFunction<MutationMutation, MutationMutationVariables>;
+
+/**
+ * __useMutationMutation__
+ *
+ * To run a mutation, you first call `useMutationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useMutationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [mutationMutation, { data, loading, error }] = useMutationMutation({
+ *   variables: {
+ *      updatePositionInput: // value for 'updatePositionInput'
+ *   },
+ * });
+ */
+export function useMutationMutation(baseOptions?: Apollo.MutationHookOptions<MutationMutation, MutationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<MutationMutation, MutationMutationVariables>(MutationDocument, options);
+      }
+export type MutationMutationHookResult = ReturnType<typeof useMutationMutation>;
+export type MutationMutationResult = Apollo.MutationResult<MutationMutation>;
+export type MutationMutationOptions = Apollo.BaseMutationOptions<MutationMutation, MutationMutationVariables>;
