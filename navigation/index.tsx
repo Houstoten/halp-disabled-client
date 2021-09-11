@@ -11,10 +11,8 @@ import {
   NavigationContainer,
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { useAuthRequest } from "expo-auth-session";
-import * as Google from "expo-google-app-auth";
 import * as React from "react";
-import { Button, ColorSchemeName, Pressable } from "react-native";
+import { ColorSchemeName, Pressable } from "react-native";
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
 import ModalScreen from "../screens/ModalScreen";
@@ -78,15 +76,6 @@ const BottomTab = createBottomTabNavigator<RootTabParamList>();
 function BottomTabNavigator() {
   const colorScheme = useColorScheme();
 
-  const [request, response, promptAsync] = useAuthRequest(
-    {
-      clientId:
-        "265204013790-b59b6kqoj0j5d4cme3pqd94bvfosudr0.apps.googleusercontent.com",
-      redirectUri: "https://webhook.site/d9dc9c04-d6f4-45a0-ad2e-bd0fa72fe898",
-    },
-    {}
-  );
-
   return (
     <BottomTab.Navigator
       initialRouteName="TabOne"
@@ -112,17 +101,6 @@ function BottomTabNavigator() {
                 size={25}
                 color={Colors[colorScheme].text}
                 style={{ marginRight: 15 }}
-              />
-              <Button
-                title="Google login"
-                onPress={async () => {
-                  const result = await Google.logInAsync({
-                    iosClientId:
-                      "265204013790-b59b6kqoj0j5d4cme3pqd94bvfosudr0.apps.googleusercontent.com",
-                    scopes: ["profile"],
-                  });
-                  console.log(result);
-                }}
               />
             </Pressable>
           ),
