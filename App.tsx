@@ -13,7 +13,7 @@ import Navigation from './navigation'
 
 const client = new ApolloClient({
     // uri: "http://192.168.0.220:3001/graphql",
-    link: createHttpLink({ uri: 'http://localhost:3001/graphql' }),
+    link: createHttpLink({ uri: 'http://192.168.0.220:3001/graphql' }),
     cache: new InMemoryCache(),
 })
 
