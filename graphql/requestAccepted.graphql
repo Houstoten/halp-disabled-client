@@ -1,0 +1,9 @@
+subscription outcomingRequestAccepted {
+    outcomingRequestAccepted {
+        requestId
+        acceptorLocation {
+            latitude
+            longitude
+        }
+    }
+}

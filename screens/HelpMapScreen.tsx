@@ -8,10 +8,13 @@ import { RequestStatusHandler } from '../components/RequestStatusHandler'
 import { View } from '../components/Themed'
 import {
     IncomingRequestSubscription,
+    OutcomingRequestAcceptedAction,
     useIncomingRequestSubscription,
     useMeQuery,
+    useOutcomingRequestAcceptedSubscription,
     useUpdatePositionMutation,
 } from '../graphql/generated/graphql'
+import { RequestStatus, useRequestCtx } from '../hooks/useRequestContext'
 import { RootTabScreenProps } from '../types'
 
 export default function HelpMapScreen({
@@ -19,10 +22,27 @@ export default function HelpMapScreen({
 }: RootTabScreenProps<'Help Map'>) {
     const { data } = useMeQuery()
     const colorMode = useColorScheme()
+    const requestCtx = useRequestCtx()
     const [updateLocation] = useUpdatePositionMutation()
     const [pendingRequests, setPendingRequest] = useState<
         Array<IncomingRequestSubscription['incomingRequest']>
     >([])
+    const [helper, setHelper] = useState<OutcomingRequestAcceptedAction>()
+
+    useOutcomingRequestAcceptedSubscription({
+        skip: !data?.me?.id || !data?.me?.is_disabled,
+        onSubscriptionData({ subscriptionData }) {
+            if (subscriptionData.data?.outcomingRequestAccepted) {
+                requestCtx.update({
+                    status: RequestStatus.ONGOING,
+                    requestId:
+                        subscriptionData.data?.outcomingRequestAccepted
+                            .requestId,
+                })
+                setHelper(subscriptionData.data.outcomingRequestAccepted)
+            }
+        },
+    })
 
     useIncomingRequestSubscription({
         skip: !data?.me?.id || data?.me?.is_disabled,
@@ -80,6 +100,12 @@ export default function HelpMapScreen({
                         }}
                     />
                 ))}
+                {helper && (
+                    <Marker
+                        coordinate={helper.acceptorLocation}
+                        pinColor="blue"
+                    />
+                )}
             </MapView>
 
             {isDisabledUser && (
@@ -94,7 +120,10 @@ export default function HelpMapScreen({
                 />
             )}
 
-            <RequestStatusHandler isDisabledUser={isDisabledUser} />
+            <RequestStatusHandler
+                isDisabledUser={isDisabledUser}
+                updateHelper={setHelper}
+            />
         </View>
     )
 }

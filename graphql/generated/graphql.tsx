@@ -83,6 +83,12 @@ export type MutationUpdatePositionArgs = {
   input: PositionArgs;
 };
 
+export type OutcomingRequestAcceptedAction = {
+  __typename?: 'OutcomingRequestAcceptedAction';
+  acceptorLocation: PositionObject;
+  requestId: Scalars['String'];
+};
+
 export type PositionArgs = {
   latitude: Scalars['Float'];
   longitude: Scalars['Float'];
@@ -115,6 +121,7 @@ export type RequestNearby = {
 export type Subscription = {
   __typename?: 'Subscription';
   incomingRequest: RequestNearby;
+  outcomingRequestAccepted: OutcomingRequestAcceptedAction;
 };
 
 export type SuccessResponse = {
@@ -190,6 +197,11 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type MeQuery = { __typename?: 'Query', me: { __typename?: 'User', id: string, name: string, avatar: string, is_disabled: boolean } };
+
+export type OutcomingRequestAcceptedSubscriptionVariables = Exact<{ [key: string]: never; }>;
+
+
+export type OutcomingRequestAcceptedSubscription = { __typename?: 'Subscription', outcomingRequestAccepted: { __typename?: 'OutcomingRequestAcceptedAction', requestId: string, acceptorLocation: { __typename?: 'PositionObject', latitude: number, longitude: number } } };
 
 export type UpdatePositionMutationVariables = Exact<{
   updatePositionInput: PositionArgs;
@@ -476,6 +488,39 @@ export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
+export const OutcomingRequestAcceptedDocument = gql`
+    subscription outcomingRequestAccepted {
+  outcomingRequestAccepted {
+    requestId
+    acceptorLocation {
+      latitude
+      longitude
+    }
+  }
+}
+    `;
+
+/**
+ * __useOutcomingRequestAcceptedSubscription__
+ *
+ * To run a query within a React component, call `useOutcomingRequestAcceptedSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useOutcomingRequestAcceptedSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useOutcomingRequestAcceptedSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useOutcomingRequestAcceptedSubscription(baseOptions?: Apollo.SubscriptionHookOptions<OutcomingRequestAcceptedSubscription, OutcomingRequestAcceptedSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<OutcomingRequestAcceptedSubscription, OutcomingRequestAcceptedSubscriptionVariables>(OutcomingRequestAcceptedDocument, options);
+      }
+export type OutcomingRequestAcceptedSubscriptionHookResult = ReturnType<typeof useOutcomingRequestAcceptedSubscription>;
+export type OutcomingRequestAcceptedSubscriptionResult = Apollo.SubscriptionResult<OutcomingRequestAcceptedSubscription>;
 export const UpdatePositionDocument = gql`
     mutation updatePosition($updatePositionInput: PositionArgs!) {
   updatePosition(input: $updatePositionInput) {

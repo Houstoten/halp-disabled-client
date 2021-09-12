@@ -1,5 +1,5 @@
 import { LinearGradient } from 'expo-linear-gradient'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet } from 'react-native'
 import { AirbnbRating, Chip, Overlay } from 'react-native-elements'
 import {
@@ -11,8 +11,10 @@ import { View } from './Themed'
 
 export const RequestStatusHandler = ({
     isDisabledUser,
+    updateHelper,
 }: {
     isDisabledUser: boolean
+    updateHelper: Function
 }) => {
     const request = useRequestCtx()
     const [cancelRequest] = useDeclineRequestMutation({
@@ -95,7 +97,7 @@ export const RequestStatusHandler = ({
                             type: 'ionicon',
                             size: 30,
                             color: 'white',
-                            onPress: () =>
+                            onPress: () => {
                                 approveRequest({
                                     variables: {
                                         approveRequestInput: {
@@ -103,21 +105,47 @@ export const RequestStatusHandler = ({
                                                 .requestId as any,
                                         },
                                     },
-                                }),
+                                })
+                                updateHelper(null)
+                            },
                         }
                     }
                 />
             </View>
         ),
-        COMPLETED: <RatingOverlay />,
+        COMPLETED: <RatingOverlay isDisabledUser={isDisabledUser} />,
     }
 
     return requestToComponent[request.value.status]
 }
 
-const RatingOverlay = () => {
+const RatingOverlay = ({ isDisabledUser }: { isDisabledUser: boolean }) => {
     const [visible, setVisible] = useState(true)
     const request = useRequestCtx()
+
+    useEffect(() => {
+        if (isDisabledUser) {
+            setTimeout(() => setVisible(false), 5000)
+        }
+    }, [isDisabledUser])
+
+    if (isDisabledUser) {
+        return visible ? (
+            <View style={styles.topContainer}>
+                <Chip
+                    title="Request Completed"
+                    buttonStyle={{ borderRadius: 16 }}
+                    titleStyle={styles.title}
+                    ViewComponent={LinearGradient}
+                    linearGradientProps={{
+                        colors: ['blue', 'green'],
+                        start: { x: 0, y: 0.5 },
+                        end: { x: 1, y: 0.5 },
+                    }}
+                />
+            </View>
+        ) : null
+    }
 
     return (
         <Overlay
