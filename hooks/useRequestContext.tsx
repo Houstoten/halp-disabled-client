@@ -28,9 +28,7 @@ export const RequestContext = createContext<RequestContextType>({
 })
 
 export const RequestContextProvider: FC = ({ children }) => {
-    const [value, setValue] = useState<RequestContextType['value']>({
-        // status: RequestStatus.COMPLETED,
-    })
+    const [value, setValue] = useState<RequestContextType['value']>({})
 
     const update: RequestContextType['update'] = useCallback((data) => {
         setValue((value) => ({ ...value, ...data }))

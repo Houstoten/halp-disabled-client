@@ -1,7 +1,7 @@
 import * as Location from 'expo-location'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
-import { StyleSheet, useColorScheme } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { FAB } from 'react-native-elements'
 import MapView, { Marker } from 'react-native-maps'
 import { RequestStatusHandler } from '../components/RequestStatusHandler'
@@ -22,7 +22,6 @@ export default function HelpMapScreen({
     navigation,
 }: RootTabScreenProps<'Help Map'>) {
     const { data } = useMeQuery()
-    const colorMode = useColorScheme()
     const requestCtx = useRequestCtx()
     const [updateLocation] = useUpdatePositionMutation()
     const [pendingRequests, setPendingRequest] = useState<
@@ -88,7 +87,6 @@ export default function HelpMapScreen({
                 followsUserLocation
                 showsUserLocation
                 showsMyLocationButton
-                userInterfaceStyle={colorMode === 'dark' ? 'dark' : 'light'}
                 style={StyleSheet.absoluteFill}
                 onUserLocationChange={(location) => {
                     const { latitude, longitude } =
