@@ -2,7 +2,10 @@ import { LinearGradient } from 'expo-linear-gradient'
 import React, { useState } from 'react'
 import { StyleSheet } from 'react-native'
 import { AirbnbRating, Chip, Overlay } from 'react-native-elements'
-import { useDeclineRequestMutation } from '../graphql/generated/graphql'
+import {
+    useApproveRequestMutation,
+    useDeclineRequestMutation,
+} from '../graphql/generated/graphql'
 import { RequestStatus, useRequestCtx } from '../hooks/useRequestContext'
 import { View } from './Themed'
 
@@ -16,6 +19,11 @@ export const RequestStatusHandler = ({
         onCompleted() {
             request.update({ status: RequestStatus.CANCELLED })
             setTimeout(() => request.update({ status: '' as any }), 5000)
+        },
+    })
+    const [approveRequest] = useApproveRequestMutation({
+        onCompleted() {
+            request.update({ status: RequestStatus.COMPLETED })
         },
     })
 
@@ -81,6 +89,23 @@ export const RequestStatusHandler = ({
                         start: { x: 0, y: 0.5 },
                         end: { x: 1, y: 0.5 },
                     }}
+                    icon={
+                        isDisabledUser && {
+                            name: 'checkmark-circle-outline',
+                            type: 'ionicon',
+                            size: 30,
+                            color: 'white',
+                            onPress: () =>
+                                approveRequest({
+                                    variables: {
+                                        approveRequestInput: {
+                                            requestId: request.value
+                                                .requestId as any,
+                                        },
+                                    },
+                                }),
+                        }
+                    }
                 />
             </View>
         ),
@@ -92,12 +117,16 @@ export const RequestStatusHandler = ({
 
 const RatingOverlay = () => {
     const [visible, setVisible] = useState(true)
+    const request = useRequestCtx()
 
     return (
         <Overlay
             overlayStyle={styles.ratingContainer}
             isVisible={visible}
-            onBackdropPress={() => setVisible(false)}
+            onBackdropPress={() => {
+                request.update({ status: '' as any })
+                setVisible(false)
+            }}
         >
             <AirbnbRating onFinishRating={() => {}} />
         </Overlay>
