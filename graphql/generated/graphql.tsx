@@ -14,6 +14,10 @@ export type Scalars = {
   Float: number;
 };
 
+export type AcceptRequestArgs = {
+  requestId: Scalars['String'];
+};
+
 export type AuthArgs = {
   accessToken: Scalars['String'];
   idToken: Scalars['String'];
@@ -27,11 +31,23 @@ export type HelpMeActionArgs = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  acceptRequest: SuccessResponse;
+  approveRequest: SuccessResponse;
   createRequest: SuccessResponse;
   login: SuccessResponse;
   logout: SuccessResponse;
   refreshTokens: SuccessResponse;
   updatePosition: SuccessResponse;
+};
+
+
+export type MutationAcceptRequestArgs = {
+  input: AcceptRequestArgs;
+};
+
+
+export type MutationApproveRequestArgs = {
+  input: AcceptRequestArgs;
 };
 
 
@@ -89,6 +105,20 @@ export type UserCount = {
   requests_as_supplier: Scalars['Int'];
 };
 
+export type AcceptRequestMutationVariables = Exact<{
+  acceptRequestInput: AcceptRequestArgs;
+}>;
+
+
+export type AcceptRequestMutation = { __typename?: 'Mutation', acceptRequest: { __typename?: 'SuccessResponse', success: boolean } };
+
+export type ApproveRequestMutationVariables = Exact<{
+  approveRequestInput: AcceptRequestArgs;
+}>;
+
+
+export type ApproveRequestMutation = { __typename?: 'Mutation', approveRequest: { __typename?: 'SuccessResponse', success: boolean } };
+
 export type CreateRequestMutationVariables = Exact<{
   createRequestInput: HelpMeActionArgs;
 }>;
@@ -121,6 +151,72 @@ export type UpdatePositionMutationVariables = Exact<{
 export type UpdatePositionMutation = { __typename?: 'Mutation', updatePosition: { __typename?: 'SuccessResponse', success: boolean } };
 
 
+export const AcceptRequestDocument = gql`
+    mutation AcceptRequest($acceptRequestInput: AcceptRequestArgs!) {
+  acceptRequest(input: $acceptRequestInput) {
+    success
+  }
+}
+    `;
+export type AcceptRequestMutationFn = Apollo.MutationFunction<AcceptRequestMutation, AcceptRequestMutationVariables>;
+
+/**
+ * __useAcceptRequestMutation__
+ *
+ * To run a mutation, you first call `useAcceptRequestMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAcceptRequestMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [acceptRequestMutation, { data, loading, error }] = useAcceptRequestMutation({
+ *   variables: {
+ *      acceptRequestInput: // value for 'acceptRequestInput'
+ *   },
+ * });
+ */
+export function useAcceptRequestMutation(baseOptions?: Apollo.MutationHookOptions<AcceptRequestMutation, AcceptRequestMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AcceptRequestMutation, AcceptRequestMutationVariables>(AcceptRequestDocument, options);
+      }
+export type AcceptRequestMutationHookResult = ReturnType<typeof useAcceptRequestMutation>;
+export type AcceptRequestMutationResult = Apollo.MutationResult<AcceptRequestMutation>;
+export type AcceptRequestMutationOptions = Apollo.BaseMutationOptions<AcceptRequestMutation, AcceptRequestMutationVariables>;
+export const ApproveRequestDocument = gql`
+    mutation approveRequest($approveRequestInput: AcceptRequestArgs!) {
+  approveRequest(input: $approveRequestInput) {
+    success
+  }
+}
+    `;
+export type ApproveRequestMutationFn = Apollo.MutationFunction<ApproveRequestMutation, ApproveRequestMutationVariables>;
+
+/**
+ * __useApproveRequestMutation__
+ *
+ * To run a mutation, you first call `useApproveRequestMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useApproveRequestMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [approveRequestMutation, { data, loading, error }] = useApproveRequestMutation({
+ *   variables: {
+ *      approveRequestInput: // value for 'approveRequestInput'
+ *   },
+ * });
+ */
+export function useApproveRequestMutation(baseOptions?: Apollo.MutationHookOptions<ApproveRequestMutation, ApproveRequestMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ApproveRequestMutation, ApproveRequestMutationVariables>(ApproveRequestDocument, options);
+      }
+export type ApproveRequestMutationHookResult = ReturnType<typeof useApproveRequestMutation>;
+export type ApproveRequestMutationResult = Apollo.MutationResult<ApproveRequestMutation>;
+export type ApproveRequestMutationOptions = Apollo.BaseMutationOptions<ApproveRequestMutation, ApproveRequestMutationVariables>;
 export const CreateRequestDocument = gql`
     mutation createRequest($createRequestInput: HelpMeActionArgs!) {
   createRequest(input: $createRequestInput) {
