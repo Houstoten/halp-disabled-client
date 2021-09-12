@@ -1,5 +1,6 @@
 import { StatusBar } from 'expo-status-bar'
 import * as React from 'react'
+import { useEffect, useState } from 'react'
 import { Platform, StyleSheet } from 'react-native'
 import { Button, Input } from 'react-native-elements'
 import { Switch } from 'react-native-elements/dist/switch/switch'
@@ -13,10 +14,10 @@ export default function HelpModal({
 }: RootStackScreenProps<'HelpModal'>) {
     const requestCtx = useRequestCtx()
     const [postRequest, { data }] = useCreateRequestMutation()
-    const [description, setDescription] = React.useState('')
-    const [inplace, setinPlace] = React.useState(true)
+    const [description, setDescription] = useState('')
+    const [inplace, setinPlace] = useState(true)
 
-    React.useEffect(() => {
+    useEffect(() => {
         const requestId = data?.createRequest?.requestId
         if (requestId) {
             requestCtx?.update({ status: RequestStatus.PENDING, requestId })

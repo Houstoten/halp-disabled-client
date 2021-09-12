@@ -122,10 +122,17 @@ export type Subscription = {
   __typename?: 'Subscription';
   incomingRequest: RequestNearby;
   outcomingRequestAccepted: OutcomingRequestAcceptedAction;
+  requestStatusApprove: SuccessWithRequest;
 };
 
 export type SuccessResponse = {
   __typename?: 'SuccessResponse';
+  success: Scalars['Boolean'];
+};
+
+export type SuccessWithRequest = {
+  __typename?: 'SuccessWithRequest';
+  requestId: Scalars['String'];
   success: Scalars['Boolean'];
 };
 
@@ -202,6 +209,11 @@ export type OutcomingRequestAcceptedSubscriptionVariables = Exact<{ [key: string
 
 
 export type OutcomingRequestAcceptedSubscription = { __typename?: 'Subscription', outcomingRequestAccepted: { __typename?: 'OutcomingRequestAcceptedAction', requestId: string, acceptorLocation: { __typename?: 'PositionObject', latitude: number, longitude: number } } };
+
+export type RequestStatusApproveSubscriptionVariables = Exact<{ [key: string]: never; }>;
+
+
+export type RequestStatusApproveSubscription = { __typename?: 'Subscription', requestStatusApprove: { __typename?: 'SuccessWithRequest', requestId: string, success: boolean } };
 
 export type UpdatePositionMutationVariables = Exact<{
   updatePositionInput: PositionArgs;
@@ -521,6 +533,36 @@ export function useOutcomingRequestAcceptedSubscription(baseOptions?: Apollo.Sub
       }
 export type OutcomingRequestAcceptedSubscriptionHookResult = ReturnType<typeof useOutcomingRequestAcceptedSubscription>;
 export type OutcomingRequestAcceptedSubscriptionResult = Apollo.SubscriptionResult<OutcomingRequestAcceptedSubscription>;
+export const RequestStatusApproveDocument = gql`
+    subscription requestStatusApprove {
+  requestStatusApprove {
+    requestId
+    success
+  }
+}
+    `;
+
+/**
+ * __useRequestStatusApproveSubscription__
+ *
+ * To run a query within a React component, call `useRequestStatusApproveSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useRequestStatusApproveSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useRequestStatusApproveSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useRequestStatusApproveSubscription(baseOptions?: Apollo.SubscriptionHookOptions<RequestStatusApproveSubscription, RequestStatusApproveSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<RequestStatusApproveSubscription, RequestStatusApproveSubscriptionVariables>(RequestStatusApproveDocument, options);
+      }
+export type RequestStatusApproveSubscriptionHookResult = ReturnType<typeof useRequestStatusApproveSubscription>;
+export type RequestStatusApproveSubscriptionResult = Apollo.SubscriptionResult<RequestStatusApproveSubscription>;
 export const UpdatePositionDocument = gql`
     mutation updatePosition($updatePositionInput: PositionArgs!) {
   updatePosition(input: $updatePositionInput) {

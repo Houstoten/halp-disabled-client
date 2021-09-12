@@ -124,12 +124,15 @@ const RatingOverlay = ({ isDisabledUser }: { isDisabledUser: boolean }) => {
     const request = useRequestCtx()
 
     useEffect(() => {
-        if (isDisabledUser) {
-            setTimeout(() => setVisible(false), 5000)
+        if (!isDisabledUser) {
+            setTimeout(() => {
+                setVisible(false)
+                request.update({ requestId: '', status: '' as any })
+            }, 5000)
         }
     }, [isDisabledUser])
 
-    if (isDisabledUser) {
+    if (!isDisabledUser) {
         return visible ? (
             <View style={styles.topContainer}>
                 <Chip

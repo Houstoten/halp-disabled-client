@@ -1,0 +1,6 @@
+subscription requestStatusApprove {
+    requestStatusApprove {
+        requestId
+        success
+    }
+}

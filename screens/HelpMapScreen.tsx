@@ -12,6 +12,7 @@ import {
     useIncomingRequestSubscription,
     useMeQuery,
     useOutcomingRequestAcceptedSubscription,
+    useRequestStatusApproveSubscription,
     useUpdatePositionMutation,
 } from '../graphql/generated/graphql'
 import { RequestStatus, useRequestCtx } from '../hooks/useRequestContext'
@@ -52,6 +53,21 @@ export default function HelpMapScreen({
                     .concat(subscriptionData?.data?.incomingRequest as any)
                     .filter(Boolean)
             )
+        },
+    })
+
+    useRequestStatusApproveSubscription({
+        skip: !data?.me?.id || data?.me?.is_disabled,
+        onSubscriptionData({ subscriptionData }) {
+            setPendingRequest((pendingRequests) =>
+                pendingRequests.filter(
+                    (r) =>
+                        r.request.id !==
+                        subscriptionData.data?.requestStatusApprove?.requestId
+                )
+            )
+
+            requestCtx.update({ status: RequestStatus.COMPLETED })
         },
     })
 
@@ -108,17 +124,20 @@ export default function HelpMapScreen({
                 )}
             </MapView>
 
-            {isDisabledUser && (
-                <FAB
-                    title="Help"
-                    placement="right"
-                    color="red"
-                    containerStyle={styles.helpContainer}
-                    titleStyle={styles.helpTitle}
-                    buttonStyle={styles.helpButton}
-                    onPress={() => navigation.navigate('HelpModal')}
-                />
-            )}
+            {isDisabledUser &&
+                ![RequestStatus.PENDING, RequestStatus.ONGOING].includes(
+                    requestCtx?.value?.status as any
+                ) && (
+                    <FAB
+                        title="Help"
+                        placement="right"
+                        color="red"
+                        containerStyle={styles.helpContainer}
+                        titleStyle={styles.helpTitle}
+                        buttonStyle={styles.helpButton}
+                        onPress={() => navigation.navigate('HelpModal')}
+                    />
+                )}
 
             <RequestStatusHandler
                 isDisabledUser={isDisabledUser}
