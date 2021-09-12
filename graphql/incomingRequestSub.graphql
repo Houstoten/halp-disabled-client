@@ -10,5 +10,9 @@ subscription incomingRequest {
             avatar
             is_disabled
         }
+        location {
+            latitude
+            longitude
+        }
     }
 }

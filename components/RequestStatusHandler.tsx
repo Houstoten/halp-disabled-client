@@ -22,12 +22,13 @@ export const RequestStatusHandler = ({
                 <Chip
                     title="Pending request"
                     ViewComponent={LinearGradient}
+                    titleStyle={styles.title}
                     linearGradientProps={{
                         colors: ['white', 'green'],
                         start: { x: 0, y: 0.5 },
                         end: { x: 1, y: 0.5 },
                     }}
-                    style={styles.topContainer}
+                    buttonStyle={{ borderRadius: 16 }}
                     // icon={{
                     //     name: 'bluetooth',
                     //     type: 'font-awesome',
@@ -41,13 +42,14 @@ export const RequestStatusHandler = ({
             <View style={styles.topContainer}>
                 <Chip
                     title="Request Cancelled"
+                    titleStyle={styles.title}
+                    buttonStyle={{ borderRadius: 16 }}
                     ViewComponent={LinearGradient}
                     linearGradientProps={{
                         colors: ['white', 'red'],
                         start: { x: 0, y: 0.5 },
                         end: { x: 1, y: 0.5 },
                     }}
-                    style={styles.topContainer}
                 />
             </View>
         ),
@@ -55,13 +57,14 @@ export const RequestStatusHandler = ({
             <View style={styles.topContainer}>
                 <Chip
                     title="Ongoing request"
+                    buttonStyle={{ borderRadius: 16 }}
+                    titleStyle={styles.title}
                     ViewComponent={LinearGradient}
                     linearGradientProps={{
-                        colors: ['white', 'red'],
+                        colors: ['white', 'blue'],
                         start: { x: 0, y: 0.5 },
                         end: { x: 1, y: 0.5 },
                     }}
-                    style={styles.topContainer}
                 />
             </View>
         ),
@@ -98,10 +101,10 @@ const styles = StyleSheet.create({
         height: 140,
         borderRadius: 40,
     },
-    helpTitle: {
+    title: {
         color: 'white',
         fontWeight: 'bold',
-        fontSize: 25,
+        fontSize: 17,
     },
     helpButton: {
         height: 55,

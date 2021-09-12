@@ -81,6 +81,12 @@ export type PositionArgs = {
   longitude: Scalars['Float'];
 };
 
+export type PositionObject = {
+  __typename?: 'PositionObject';
+  latitude: Scalars['Float'];
+  longitude: Scalars['Float'];
+};
+
 export type Query = {
   __typename?: 'Query';
   getUserById: User;
@@ -94,6 +100,7 @@ export type QueryGetUserByIdArgs = {
 
 export type RequestNearby = {
   __typename?: 'RequestNearby';
+  location: PositionObject;
   request: HelpMeAction;
   requestor: User;
 };
@@ -151,7 +158,7 @@ export type CreateRequestMutation = { __typename?: 'Mutation', createRequest: { 
 export type IncomingRequestSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type IncomingRequestSubscription = { __typename?: 'Subscription', incomingRequest: { __typename?: 'RequestNearby', request: { __typename?: 'HelpMeAction', description: string, inplace: boolean }, requestor: { __typename?: 'User', id: string, name: string, avatar: string, is_disabled: boolean } } };
+export type IncomingRequestSubscription = { __typename?: 'Subscription', incomingRequest: { __typename?: 'RequestNearby', request: { __typename?: 'HelpMeAction', description: string, inplace: boolean }, requestor: { __typename?: 'User', id: string, name: string, avatar: string, is_disabled: boolean }, location: { __typename?: 'PositionObject', latitude: number, longitude: number } } };
 
 export type LoginMutationVariables = Exact<{
   loginInput: AuthArgs;
@@ -289,6 +296,10 @@ export const IncomingRequestDocument = gql`
       name
       avatar
       is_disabled
+    }
+    location {
+      latitude
+      longitude
     }
   }
 }

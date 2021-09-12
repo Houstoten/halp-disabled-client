@@ -20,7 +20,7 @@ export default function HelpMapScreen({
     const [updateLocation] = useUpdatePositionMutation()
     const colorMode = useColorScheme()
     const requestSubcribtion = useIncomingRequestSubscription({
-        skip: !data?.me?.id,
+        skip: !data?.me?.id || data?.me?.is_disabled,
     })
 
     console.log({ requestSubcribtion })
