@@ -9,7 +9,7 @@ import * as React from 'react'
 import { ActivityIndicator, ColorSchemeName } from 'react-native'
 import { View } from '../components/Themed'
 import { useMeQuery } from '../graphql/generated/graphql'
-import TabOneScreen from '../screens/AccountScreen'
+import Account from '../screens/AccountScreen'
 import HelpMapScreen from '../screens/HelpMapScreen'
 import HelpModal from '../screens/HelpModal'
 import LoginScreen from '../screens/LoginScreen'
@@ -101,7 +101,7 @@ function DrawerNavigation() {
             })}
         >
             <Drawer.Screen name="Help Map" component={HelpMapScreen} />
-            <Drawer.Screen name="Account" component={TabOneScreen} />
+            <Drawer.Screen name="Account" component={Account} />
         </Drawer.Navigator>
     )
 }

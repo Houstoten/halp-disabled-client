@@ -1,15 +1,38 @@
 import { StatusBar } from 'expo-status-bar'
 import * as React from 'react'
 import { Platform, StyleSheet } from 'react-native'
-import { Text } from 'react-native-elements'
+import { Button, Switch, Text } from 'react-native-elements'
 import { View } from '../components/Themed'
+import { useAcceptRequestMutation } from '../graphql/generated/graphql'
+import { RequestStatus, useRequestCtx } from '../hooks/useRequestContext'
 
-export default function RequestInfoModal() {
+export default function RequestInfoModal({ route, navigation }: any) {
+    const request = route.params
+    const { update } = useRequestCtx()
+    const [acceptMutation] = useAcceptRequestMutation({
+        onCompleted() {
+            update({ status: RequestStatus.ONGOING })
+            navigation.navigate('Root', { screen: 'Help Map' })
+        },
+    })
+
     return (
         <View style={styles.container}>
-            <Text>Description</Text>
-            {/* <Switch value={inPlace} onValueChange={setInPlace} /> */}
+            <Text>{request.description}</Text>
+            <Switch value={request.inplace} disabled />
             <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
+            <Button
+                title="Accept"
+                onPress={() => {
+                    acceptMutation({
+                        variables: {
+                            acceptRequestInput: {
+                                requestId: request.id,
+                            },
+                        },
+                    })
+                }}
+            />
         </View>
     )
 }

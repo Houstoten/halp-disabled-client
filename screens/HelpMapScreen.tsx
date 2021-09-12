@@ -8,7 +8,6 @@ import { RequestStatusHandler } from '../components/RequestStatusHandler'
 import { View } from '../components/Themed'
 import {
     IncomingRequestSubscription,
-    useAcceptRequestMutation,
     useIncomingRequestSubscription,
     useMeQuery,
     useUpdatePositionMutation,
@@ -21,13 +20,8 @@ export default function HelpMapScreen({
     const { data } = useMeQuery()
     const colorMode = useColorScheme()
     const [updateLocation] = useUpdatePositionMutation()
-    const [acceptMutation] = useAcceptRequestMutation()
     const [pendingRequests, setPendingRequest] = useState<
-        Array<
-            IncomingRequestSubscription['incomingRequest']['location'] & {
-                id: string
-            }
-        >
+        Array<IncomingRequestSubscription['incomingRequest']>
     >([])
 
     useIncomingRequestSubscription({
@@ -35,11 +29,7 @@ export default function HelpMapScreen({
         onSubscriptionData({ subscriptionData }) {
             setPendingRequest((pendingRequests) =>
                 pendingRequests
-                    .concat({
-                        ...subscriptionData?.data?.incomingRequest?.location,
-                        id: subscriptionData?.data?.incomingRequest?.request
-                            ?.id,
-                    } as any)
+                    .concat(subscriptionData?.data?.incomingRequest as any)
                     .filter(Boolean)
             )
         },
@@ -77,16 +67,16 @@ export default function HelpMapScreen({
             >
                 {pendingRequests.map((req) => (
                     <Marker
+                        key={req.request.id}
                         coordinate={{
-                            latitude: req.latitude,
-                            longitude: req.longitude,
+                            latitude: req.location.latitude,
+                            longitude: req.location.longitude,
                         }}
                         onPress={() => {
-                            acceptMutation({
-                                variables: {
-                                    acceptRequestInput: { requestId: req.id },
-                                },
-                            })
+                            navigation.navigate(
+                                'RequestInfoModal',
+                                req.request as any
+                            )
                         }}
                     />
                 ))}
