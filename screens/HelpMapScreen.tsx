@@ -9,8 +9,11 @@ import {
     useMeQuery,
     useUpdatePositionMutation,
 } from '../graphql/generated/graphql'
+import { RootTabScreenProps } from '../types'
 
-export default function HelpMapScreen() {
+export default function HelpMapScreen({
+    navigation,
+}: RootTabScreenProps<'Help Map'>) {
     const { data } = useMeQuery()
     const [updateLocation] = useUpdatePositionMutation()
     const colorMode = useColorScheme()
@@ -51,23 +54,28 @@ export default function HelpMapScreen() {
                     title="Help"
                     placement="right"
                     color="red"
-                    containerStyle={{ width: '100%' }}
-                    titleStyle={{
-                        color: 'white',
-                        fontWeight: 'bold',
-                        fontSize: 25,
-                    }}
-                    buttonStyle={{
-                        height: 55,
-                    }}
+                    containerStyle={styles.helpContainer}
+                    titleStyle={styles.helpTitle}
+                    buttonStyle={styles.helpButton}
+                    onPress={() => navigation.navigate('HelpModal')}
                 />
             )}
         </View>
     )
 }
+
 const styles = StyleSheet.create({
-    helpButton: {
+    helpContainer: {
+        width: '100%',
+        marginBottom: 20,
+    },
+    helpTitle: {
         color: 'white',
+        fontWeight: 'bold',
+        fontSize: 25,
+    },
+    helpButton: {
+        height: 55,
     },
     container: {
         flex: 1,

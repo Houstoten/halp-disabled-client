@@ -18,7 +18,8 @@ declare global {
 
 export type RootStackParamList = {
     Root: NavigatorScreenParams<RootDrawerScreens> | undefined
-    Modal: undefined
+    HelpModal: undefined
+    RequestInfoModal: undefined
     Login: undefined
     NotFound: undefined
 }

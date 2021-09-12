@@ -11,8 +11,8 @@ import { View } from '../components/Themed'
 import { useMeQuery } from '../graphql/generated/graphql'
 import TabOneScreen from '../screens/AccountScreen'
 import HelpMapScreen from '../screens/HelpMapScreen'
+import HelpModalScreen from '../screens/HelpModal'
 import LoginScreen from '../screens/LoginScreen'
-import ModalScreen from '../screens/ModalScreen'
 import NotFoundScreen from '../screens/NotFoundScreen'
 import { RootDrawerScreens, RootStackParamList } from '../types'
 
@@ -75,7 +75,16 @@ function RootNavigator() {
             )}
 
             <Stack.Group screenOptions={{ presentation: 'modal' }}>
-                <Stack.Screen name="Modal" component={ModalScreen} />
+                <Stack.Screen
+                    name="HelpModal"
+                    component={HelpModalScreen}
+                    options={{ title: 'Ask for help' }}
+                />
+                <Stack.Screen
+                    name="RequestInfoModal"
+                    component={HelpModalScreen}
+                    options={{ title: 'Request Info' }}
+                />
             </Stack.Group>
         </Stack.Navigator>
     )
