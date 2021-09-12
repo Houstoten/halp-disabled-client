@@ -6,7 +6,7 @@ import { View } from '../components/Themed'
 import { useLoginMutation } from '../graphql/generated/graphql'
 
 export default function LoginScreen() {
-    const [login, { loading, data }] = useLoginMutation()
+    const [login, { loading }] = useLoginMutation()
 
     const onLoginClick = async () => {
         const { accessToken, refreshToken, idToken }: any =

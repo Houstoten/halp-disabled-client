@@ -11,11 +11,11 @@ export const LoginButton = ({
     return (
         <SocialIcon
             button
-            loading={loading}
+            disabled={loading}
             type="google"
             title="Signin with Google"
             fontStyle={{ fontSize: 16 }}
-            style={{ width: 220 }}
+            style={{ width: 250 }}
             onPress={onClick}
         />
     )
