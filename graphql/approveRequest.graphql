@@ -1,0 +1,5 @@
+mutation approveRequest($approveRequestInput: AcceptRequestArgs!) {
+    approveRequest(input: $approveRequestInput) {
+        success
+    }
+}
