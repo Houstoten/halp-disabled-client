@@ -109,10 +109,7 @@ export default function HelpMapScreen({
                             longitude: req.location.longitude,
                         }}
                         onPress={() => {
-                            navigation.navigate(
-                                'RequestInfoModal',
-                                req.request as any
-                            )
+                            navigation.navigate('RequestInfoModal', req as any)
                         }}
                     />
                 ))}
