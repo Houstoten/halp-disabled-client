@@ -12,20 +12,21 @@ import React from 'react'
 import { ThemeProvider } from 'react-native-elements'
 import 'react-native-gesture-handler'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
+import { host } from './constants/Host'
 import useCachedResources from './hooks/useCachedResources'
 import useColorScheme from './hooks/useColorScheme'
 import { RequestContextProvider } from './hooks/useRequestContext'
 import Navigation from './navigation'
 
 const wsLink = new WebSocketLink({
-    uri: 'ws://localhost:3001/graphql',
+    uri: `ws://${host}/graphql`,
     options: {
         reconnect: true,
         lazy: true,
     },
 })
 
-const httpLink = createHttpLink({ uri: 'http://localhost:3001/graphql' })
+const httpLink = createHttpLink({ uri: `http://${host}/graphql` })
 
 const client = new ApolloClient({
     link: split(
