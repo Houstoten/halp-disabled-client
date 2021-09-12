@@ -1,0 +1,5 @@
+mutation declineRequest($declineRequestInput: AcceptRequestArgs!) {
+    declineRequest(input: $declineRequestInput) {
+        success
+    }
+}

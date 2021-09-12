@@ -2,6 +2,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import React, { useState } from 'react'
 import { StyleSheet } from 'react-native'
 import { AirbnbRating, Chip, Overlay } from 'react-native-elements'
+import { useDeclineRequestMutation } from '../graphql/generated/graphql'
 import { RequestStatus, useRequestCtx } from '../hooks/useRequestContext'
 import { View } from './Themed'
 
@@ -11,6 +12,12 @@ export const RequestStatusHandler = ({
     isDisabledUser: boolean
 }) => {
     const request = useRequestCtx()
+    const [cancelRequest] = useDeclineRequestMutation({
+        onCompleted() {
+            request.update({ status: RequestStatus.CANCELLED })
+            setTimeout(() => request.update({ status: '' as any }), 5000)
+        },
+    })
 
     if (!request.value?.status) {
         return null
@@ -29,12 +36,21 @@ export const RequestStatusHandler = ({
                         end: { x: 1, y: 0.5 },
                     }}
                     buttonStyle={{ borderRadius: 16 }}
-                    // icon={{
-                    //     name: 'bluetooth',
-                    //     type: 'font-awesome',
-                    //     size: 20,
-                    //     color: 'white',
-                    // }}
+                    icon={{
+                        name: 'close-circle-outline',
+                        type: 'ionicon',
+                        size: 30,
+                        color: 'white',
+                        onPress: () =>
+                            cancelRequest({
+                                variables: {
+                                    declineRequestInput: {
+                                        requestId: request.value
+                                            .requestId as any,
+                                    },
+                                },
+                            }),
+                    }}
                 />
             </View>
         ),

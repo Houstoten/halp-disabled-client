@@ -11,7 +11,7 @@ export default function RequestInfoModal({ route, navigation }: any) {
     const { update } = useRequestCtx()
     const [acceptMutation] = useAcceptRequestMutation({
         onCompleted() {
-            update({ status: RequestStatus.ONGOING })
+            update({ status: RequestStatus.ONGOING, requestId: request.id })
             navigation.navigate('Root', { screen: 'Help Map' })
         },
     })

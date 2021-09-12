@@ -162,6 +162,13 @@ export type CreateRequestMutationVariables = Exact<{
 
 export type CreateRequestMutation = { __typename?: 'Mutation', createRequest: { __typename?: 'CreateRequestResult', requestId: string } };
 
+export type DeclineRequestMutationVariables = Exact<{
+  declineRequestInput: AcceptRequestArgs;
+}>;
+
+
+export type DeclineRequestMutation = { __typename?: 'Mutation', declineRequest: { __typename?: 'SuccessResponse', success: boolean } };
+
 export type IncomingRequestSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -291,6 +298,39 @@ export function useCreateRequestMutation(baseOptions?: Apollo.MutationHookOption
 export type CreateRequestMutationHookResult = ReturnType<typeof useCreateRequestMutation>;
 export type CreateRequestMutationResult = Apollo.MutationResult<CreateRequestMutation>;
 export type CreateRequestMutationOptions = Apollo.BaseMutationOptions<CreateRequestMutation, CreateRequestMutationVariables>;
+export const DeclineRequestDocument = gql`
+    mutation declineRequest($declineRequestInput: AcceptRequestArgs!) {
+  declineRequest(input: $declineRequestInput) {
+    success
+  }
+}
+    `;
+export type DeclineRequestMutationFn = Apollo.MutationFunction<DeclineRequestMutation, DeclineRequestMutationVariables>;
+
+/**
+ * __useDeclineRequestMutation__
+ *
+ * To run a mutation, you first call `useDeclineRequestMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeclineRequestMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [declineRequestMutation, { data, loading, error }] = useDeclineRequestMutation({
+ *   variables: {
+ *      declineRequestInput: // value for 'declineRequestInput'
+ *   },
+ * });
+ */
+export function useDeclineRequestMutation(baseOptions?: Apollo.MutationHookOptions<DeclineRequestMutation, DeclineRequestMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeclineRequestMutation, DeclineRequestMutationVariables>(DeclineRequestDocument, options);
+      }
+export type DeclineRequestMutationHookResult = ReturnType<typeof useDeclineRequestMutation>;
+export type DeclineRequestMutationResult = Apollo.MutationResult<DeclineRequestMutation>;
+export type DeclineRequestMutationOptions = Apollo.BaseMutationOptions<DeclineRequestMutation, DeclineRequestMutationVariables>;
 export const IncomingRequestDocument = gql`
     subscription incomingRequest {
   incomingRequest {
