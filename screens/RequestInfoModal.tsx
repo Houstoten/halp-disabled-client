@@ -4,7 +4,7 @@ import { Platform, StyleSheet } from 'react-native'
 import { Text } from 'react-native-elements'
 import { View } from '../components/Themed'
 
-export default function HelpModalScreen() {
+export default function RequestInfoModal() {
     return (
         <View style={styles.container}>
             <Text>Description</Text>

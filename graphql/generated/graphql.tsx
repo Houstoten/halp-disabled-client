@@ -20,12 +20,23 @@ export type AuthArgs = {
   refreshToken: Scalars['String'];
 };
 
+export type HelpMeActionArgs = {
+  description: Scalars['String'];
+  inplace: Scalars['Boolean'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
+  createRequest: SuccessResponse;
   login: SuccessResponse;
   logout: SuccessResponse;
   refreshTokens: SuccessResponse;
   updatePosition: SuccessResponse;
+};
+
+
+export type MutationCreateRequestArgs = {
+  input: HelpMeActionArgs;
 };
 
 
@@ -54,24 +65,9 @@ export type QueryGetUserByIdArgs = {
   input: UserByIdArgs;
 };
 
-export type Subscription = {
-  __typename?: 'Subscription';
-  updateNearestData: UserUpdateResponse;
-  updateUserOnline: UserOnlineResponse;
-};
-
-
-export type SubscriptionUpdateNearestDataArgs = {
-  input: TrackedUsersArgs;
-};
-
 export type SuccessResponse = {
   __typename?: 'SuccessResponse';
   success: Scalars['Boolean'];
-};
-
-export type TrackedUsersArgs = {
-  ids: Array<Scalars['String']>;
 };
 
 export type User = {
@@ -93,22 +89,12 @@ export type UserCount = {
   requests_as_supplier: Scalars['Int'];
 };
 
-export type UserOnlineResponse = {
-  __typename?: 'UserOnlineResponse';
-  _count?: Maybe<UserCount>;
-  avatar: Scalars['String'];
-  distance?: Maybe<Scalars['Float']>;
-  id: Scalars['String'];
-  is_disabled: Scalars['Boolean'];
-  name: Scalars['String'];
-  online: Scalars['Boolean'];
-};
+export type CreateRequestMutationVariables = Exact<{
+  createRequestInput: HelpMeActionArgs;
+}>;
 
-export type UserUpdateResponse = {
-  __typename?: 'UserUpdateResponse';
-  distance?: Maybe<Scalars['Float']>;
-  id: Scalars['String'];
-};
+
+export type CreateRequestMutation = { __typename?: 'Mutation', createRequest: { __typename?: 'SuccessResponse', success: boolean } };
 
 export type LoginMutationVariables = Exact<{
   loginInput: AuthArgs;
@@ -135,6 +121,39 @@ export type UpdatePositionMutationVariables = Exact<{
 export type UpdatePositionMutation = { __typename?: 'Mutation', updatePosition: { __typename?: 'SuccessResponse', success: boolean } };
 
 
+export const CreateRequestDocument = gql`
+    mutation createRequest($createRequestInput: HelpMeActionArgs!) {
+  createRequest(input: $createRequestInput) {
+    success
+  }
+}
+    `;
+export type CreateRequestMutationFn = Apollo.MutationFunction<CreateRequestMutation, CreateRequestMutationVariables>;
+
+/**
+ * __useCreateRequestMutation__
+ *
+ * To run a mutation, you first call `useCreateRequestMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateRequestMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createRequestMutation, { data, loading, error }] = useCreateRequestMutation({
+ *   variables: {
+ *      createRequestInput: // value for 'createRequestInput'
+ *   },
+ * });
+ */
+export function useCreateRequestMutation(baseOptions?: Apollo.MutationHookOptions<CreateRequestMutation, CreateRequestMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateRequestMutation, CreateRequestMutationVariables>(CreateRequestDocument, options);
+      }
+export type CreateRequestMutationHookResult = ReturnType<typeof useCreateRequestMutation>;
+export type CreateRequestMutationResult = Apollo.MutationResult<CreateRequestMutation>;
+export type CreateRequestMutationOptions = Apollo.BaseMutationOptions<CreateRequestMutation, CreateRequestMutationVariables>;
 export const LoginDocument = gql`
     mutation login($loginInput: AuthArgs!) {
   login(input: $loginInput) {
