@@ -3,7 +3,6 @@ import * as React from 'react'
 import { Platform, StyleSheet } from 'react-native'
 import { Button, Input } from 'react-native-elements'
 import { Switch } from 'react-native-elements/dist/switch/switch'
-import { useEffect } from 'react-native-vector-icons/node_modules/@types/react'
 import { View } from '../components/Themed'
 import { useCreateRequestMutation } from '../graphql/generated/graphql'
 import { RootStackScreenProps } from '../types'
@@ -15,9 +14,9 @@ export default function HelpModal({
     const [description, setDescription] = React.useState('')
     const [inplace, setinPlace] = React.useState(true)
 
-    useEffect(() => {
+    React.useEffect(() => {
         if (data?.createRequest.success) {
-            navigation.push('Root')
+            navigation.navigate('Root', { screen: 'Help Map' })
         }
     }, [data?.createRequest])
 
