@@ -18,14 +18,14 @@ import { RequestContextProvider } from './hooks/useRequestContext'
 import Navigation from './navigation'
 
 const wsLink = new WebSocketLink({
-    uri: 'ws://192.168.0.220:3001/graphql',
+    uri: 'ws://localhost:3001/graphql',
     options: {
         reconnect: true,
         lazy: true,
     },
 })
 
-const httpLink = createHttpLink({ uri: 'http://192.168.0.220:3001/graphql' })
+const httpLink = createHttpLink({ uri: 'http://localhost:3001/graphql' })
 
 const client = new ApolloClient({
     link: split(
