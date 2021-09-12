@@ -29,6 +29,12 @@ export type CreateRequestResult = {
   requestId: Scalars['String'];
 };
 
+export type HelpMeAction = {
+  __typename?: 'HelpMeAction';
+  description: Scalars['String'];
+  inplace: Scalars['Boolean'];
+};
+
 export type HelpMeActionArgs = {
   description: Scalars['String'];
   inplace: Scalars['Boolean'];
@@ -86,6 +92,17 @@ export type QueryGetUserByIdArgs = {
   input: UserByIdArgs;
 };
 
+export type RequestNearby = {
+  __typename?: 'RequestNearby';
+  request: HelpMeAction;
+  requestor: User;
+};
+
+export type Subscription = {
+  __typename?: 'Subscription';
+  incomingRequest: RequestNearby;
+};
+
 export type SuccessResponse = {
   __typename?: 'SuccessResponse';
   success: Scalars['Boolean'];
@@ -130,6 +147,11 @@ export type CreateRequestMutationVariables = Exact<{
 
 
 export type CreateRequestMutation = { __typename?: 'Mutation', createRequest: { __typename?: 'CreateRequestResult', requestId: string } };
+
+export type IncomingRequestSubscriptionVariables = Exact<{ [key: string]: never; }>;
+
+
+export type IncomingRequestSubscription = { __typename?: 'Subscription', incomingRequest: { __typename?: 'RequestNearby', request: { __typename?: 'HelpMeAction', description: string, inplace: boolean }, requestor: { __typename?: 'User', id: string, name: string, avatar: string, is_disabled: boolean } } };
 
 export type LoginMutationVariables = Exact<{
   loginInput: AuthArgs;
@@ -255,6 +277,44 @@ export function useCreateRequestMutation(baseOptions?: Apollo.MutationHookOption
 export type CreateRequestMutationHookResult = ReturnType<typeof useCreateRequestMutation>;
 export type CreateRequestMutationResult = Apollo.MutationResult<CreateRequestMutation>;
 export type CreateRequestMutationOptions = Apollo.BaseMutationOptions<CreateRequestMutation, CreateRequestMutationVariables>;
+export const IncomingRequestDocument = gql`
+    subscription incomingRequest {
+  incomingRequest {
+    request {
+      description
+      inplace
+    }
+    requestor {
+      id
+      name
+      avatar
+      is_disabled
+    }
+  }
+}
+    `;
+
+/**
+ * __useIncomingRequestSubscription__
+ *
+ * To run a query within a React component, call `useIncomingRequestSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useIncomingRequestSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useIncomingRequestSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useIncomingRequestSubscription(baseOptions?: Apollo.SubscriptionHookOptions<IncomingRequestSubscription, IncomingRequestSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<IncomingRequestSubscription, IncomingRequestSubscriptionVariables>(IncomingRequestDocument, options);
+      }
+export type IncomingRequestSubscriptionHookResult = ReturnType<typeof useIncomingRequestSubscription>;
+export type IncomingRequestSubscriptionResult = Apollo.SubscriptionResult<IncomingRequestSubscription>;
 export const LoginDocument = gql`
     mutation login($loginInput: AuthArgs!) {
   login(input: $loginInput) {

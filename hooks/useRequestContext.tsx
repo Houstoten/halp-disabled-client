@@ -1,11 +1,11 @@
-import {
+import React, {
     createContext,
+    FC,
     useCallback,
     useContext,
     useMemo,
     useState,
 } from 'react'
-import { FC } from 'react-native-vector-icons/node_modules/@types/react'
 
 export enum RequestStatus {
     PENDING = 'PENDING',
@@ -28,13 +28,15 @@ export const RequestContext = createContext<RequestContextType>({
 })
 
 export const RequestContextProvider: FC = ({ children }) => {
-    const [value, setValue] = useState<RequestContextType['value']>({})
+    const [value, setValue] = useState<RequestContextType['value']>({
+        // status: RequestStatus.COMPLETED,
+    })
 
     const update: RequestContextType['update'] = useCallback((data) => {
         setValue((value) => ({ ...value, ...data }))
     }, [])
 
-    const payload = useMemo(() => ({ value, update }), [value])
+    const payload = useMemo(() => ({ value, update }), [value, update])
 
     return (
         <RequestContext.Provider value={payload}>

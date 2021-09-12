@@ -17,12 +17,12 @@ export default function HelpModal({
     const [inplace, setinPlace] = React.useState(true)
 
     React.useEffect(() => {
-        const requestId = data?.createRequest.requestId
-        if (!requestId) {
+        const requestId = data?.createRequest?.requestId
+        if (requestId) {
             requestCtx?.update({ status: RequestStatus.PENDING, requestId })
             navigation.navigate('Root', { screen: 'Help Map' })
         }
-    }, [data?.createRequest])
+    }, [data?.createRequest?.requestId])
 
     return (
         <View style={styles.container}>

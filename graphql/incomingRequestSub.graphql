@@ -1,0 +1,14 @@
+subscription incomingRequest {
+    incomingRequest {
+        request {
+            description
+            inplace
+        }
+        requestor {
+            id
+            name
+            avatar
+            is_disabled
+        }
+    }
+}

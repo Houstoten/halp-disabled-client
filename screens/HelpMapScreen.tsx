@@ -7,6 +7,7 @@ import MapView from 'react-native-maps'
 import { RequestStatusHandler } from '../components/RequestStatusHandler'
 import { View } from '../components/Themed'
 import {
+    useIncomingRequestSubscription,
     useMeQuery,
     useUpdatePositionMutation,
 } from '../graphql/generated/graphql'
@@ -18,6 +19,11 @@ export default function HelpMapScreen({
     const { data } = useMeQuery()
     const [updateLocation] = useUpdatePositionMutation()
     const colorMode = useColorScheme()
+    const requestSubcribtion = useIncomingRequestSubscription({
+        skip: !data?.me?.id,
+    })
+
+    console.log({ requestSubcribtion })
 
     useEffect(() => {
         Location.requestForegroundPermissionsAsync()

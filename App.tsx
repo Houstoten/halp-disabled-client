@@ -1,4 +1,12 @@
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
+import {
+    ApolloClient,
+    ApolloProvider,
+    createHttpLink,
+    InMemoryCache,
+    split,
+} from '@apollo/client'
+import { WebSocketLink } from '@apollo/client/link/ws'
+import { getMainDefinition } from '@apollo/client/utilities'
 import { StatusBar } from 'expo-status-bar'
 import React from 'react'
 import { ThemeProvider } from 'react-native-elements'
@@ -6,11 +14,30 @@ import 'react-native-gesture-handler'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import useCachedResources from './hooks/useCachedResources'
 import useColorScheme from './hooks/useColorScheme'
-import { RequestContext } from './hooks/useRequestContext'
+import { RequestContextProvider } from './hooks/useRequestContext'
 import Navigation from './navigation'
 
+const wsLink = new WebSocketLink({
+    uri: 'ws://192.168.0.220:3001/graphql',
+    options: {
+        reconnect: true,
+        lazy: true,
+    },
+})
+
+const httpLink = createHttpLink({ uri: 'http://192.168.0.220:3001/graphql' })
+
 const client = new ApolloClient({
-    uri: 'http://192.168.0.220:3001/graphql',
+    link: split(
+        ({ query }) => {
+            const { kind, operation }: any = getMainDefinition(query)
+            return (
+                kind === 'OperationDefinition' && operation === 'subscription'
+            )
+        },
+        wsLink,
+        httpLink
+    ),
     cache: new InMemoryCache(),
 })
 
@@ -24,9 +51,9 @@ export default function App() {
             <ApolloProvider client={client}>
                 <SafeAreaProvider>
                     <ThemeProvider useDark={colorScheme === 'dark'}>
-                        <RequestContext.Provider value={{}}>
+                        <RequestContextProvider>
                             <Navigation colorScheme={colorScheme} />
-                        </RequestContext.Provider>
+                        </RequestContextProvider>
                         <StatusBar />
                     </ThemeProvider>
                 </SafeAreaProvider>
