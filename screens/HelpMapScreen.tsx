@@ -1,12 +1,14 @@
 import * as Location from 'expo-location'
 import * as React from 'react'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { StyleSheet, useColorScheme } from 'react-native'
 import { FAB } from 'react-native-elements'
-import MapView from 'react-native-maps'
+import MapView, { Marker } from 'react-native-maps'
 import { RequestStatusHandler } from '../components/RequestStatusHandler'
 import { View } from '../components/Themed'
 import {
+    IncomingRequestSubscription,
+    useAcceptRequestMutation,
     useIncomingRequestSubscription,
     useMeQuery,
     useUpdatePositionMutation,
@@ -17,13 +19,31 @@ export default function HelpMapScreen({
     navigation,
 }: RootTabScreenProps<'Help Map'>) {
     const { data } = useMeQuery()
-    const [updateLocation] = useUpdatePositionMutation()
     const colorMode = useColorScheme()
-    const requestSubcribtion = useIncomingRequestSubscription({
-        skip: !data?.me?.id || data?.me?.is_disabled,
-    })
+    const [updateLocation] = useUpdatePositionMutation()
+    const [acceptMutation] = useAcceptRequestMutation()
+    const [pendingRequests, setPendingRequest] = useState<
+        Array<
+            IncomingRequestSubscription['incomingRequest']['location'] & {
+                id: string
+            }
+        >
+    >([])
 
-    console.log({ requestSubcribtion })
+    useIncomingRequestSubscription({
+        skip: !data?.me?.id || data?.me?.is_disabled,
+        onSubscriptionData({ subscriptionData }) {
+            setPendingRequest((pendingRequests) =>
+                pendingRequests
+                    .concat({
+                        ...subscriptionData?.data?.incomingRequest?.location,
+                        id: subscriptionData?.data?.incomingRequest?.request
+                            ?.id,
+                    } as any)
+                    .filter(Boolean)
+            )
+        },
+    })
 
     useEffect(() => {
         Location.requestForegroundPermissionsAsync()
@@ -54,7 +74,23 @@ export default function HelpMapScreen({
                         },
                     })
                 }}
-            />
+            >
+                {pendingRequests.map((req) => (
+                    <Marker
+                        coordinate={{
+                            latitude: req.latitude,
+                            longitude: req.longitude,
+                        }}
+                        onPress={() => {
+                            acceptMutation({
+                                variables: {
+                                    acceptRequestInput: { requestId: req.id },
+                                },
+                            })
+                        }}
+                    />
+                ))}
+            </MapView>
 
             {isDisabledUser && (
                 <FAB

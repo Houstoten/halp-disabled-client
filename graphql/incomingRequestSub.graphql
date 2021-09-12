@@ -1,6 +1,7 @@
 subscription incomingRequest {
     incomingRequest {
         request {
+            id
             description
             inplace
         }

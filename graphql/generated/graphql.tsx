@@ -32,6 +32,7 @@ export type CreateRequestResult = {
 export type HelpMeAction = {
   __typename?: 'HelpMeAction';
   description: Scalars['String'];
+  id: Scalars['String'];
   inplace: Scalars['Boolean'];
 };
 
@@ -45,6 +46,7 @@ export type Mutation = {
   acceptRequest: SuccessResponse;
   approveRequest: SuccessResponse;
   createRequest: CreateRequestResult;
+  declineRequest: SuccessResponse;
   login: SuccessResponse;
   logout: SuccessResponse;
   refreshTokens: SuccessResponse;
@@ -64,6 +66,11 @@ export type MutationApproveRequestArgs = {
 
 export type MutationCreateRequestArgs = {
   input: HelpMeActionArgs;
+};
+
+
+export type MutationDeclineRequestArgs = {
+  input: AcceptRequestArgs;
 };
 
 
@@ -158,7 +165,7 @@ export type CreateRequestMutation = { __typename?: 'Mutation', createRequest: { 
 export type IncomingRequestSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type IncomingRequestSubscription = { __typename?: 'Subscription', incomingRequest: { __typename?: 'RequestNearby', request: { __typename?: 'HelpMeAction', description: string, inplace: boolean }, requestor: { __typename?: 'User', id: string, name: string, avatar: string, is_disabled: boolean }, location: { __typename?: 'PositionObject', latitude: number, longitude: number } } };
+export type IncomingRequestSubscription = { __typename?: 'Subscription', incomingRequest: { __typename?: 'RequestNearby', request: { __typename?: 'HelpMeAction', id: string, description: string, inplace: boolean }, requestor: { __typename?: 'User', id: string, name: string, avatar: string, is_disabled: boolean }, location: { __typename?: 'PositionObject', latitude: number, longitude: number } } };
 
 export type LoginMutationVariables = Exact<{
   loginInput: AuthArgs;
@@ -288,6 +295,7 @@ export const IncomingRequestDocument = gql`
     subscription incomingRequest {
   incomingRequest {
     request {
+      id
       description
       inplace
     }
