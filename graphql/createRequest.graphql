@@ -1,5 +1,5 @@
 mutation createRequest($createRequestInput: HelpMeActionArgs!) {
     createRequest(input: $createRequestInput) {
-        success
+        requestId
     }
 }

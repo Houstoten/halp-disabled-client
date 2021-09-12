@@ -6,6 +6,7 @@ import 'react-native-gesture-handler'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import useCachedResources from './hooks/useCachedResources'
 import useColorScheme from './hooks/useColorScheme'
+import { RequestContext } from './hooks/useRequestContext'
 import Navigation from './navigation'
 
 const client = new ApolloClient({
@@ -23,7 +24,9 @@ export default function App() {
             <ApolloProvider client={client}>
                 <SafeAreaProvider>
                     <ThemeProvider useDark={colorScheme === 'dark'}>
-                        <Navigation colorScheme={colorScheme} />
+                        <RequestContext.Provider value={{}}>
+                            <Navigation colorScheme={colorScheme} />
+                        </RequestContext.Provider>
                         <StatusBar />
                     </ThemeProvider>
                 </SafeAreaProvider>

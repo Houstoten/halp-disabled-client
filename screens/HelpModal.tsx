@@ -5,17 +5,21 @@ import { Button, Input } from 'react-native-elements'
 import { Switch } from 'react-native-elements/dist/switch/switch'
 import { View } from '../components/Themed'
 import { useCreateRequestMutation } from '../graphql/generated/graphql'
+import { RequestStatus, useRequestCtx } from '../hooks/useRequestContext'
 import { RootStackScreenProps } from '../types'
 
 export default function HelpModal({
     navigation,
 }: RootStackScreenProps<'HelpModal'>) {
+    const requestCtx = useRequestCtx()
     const [postRequest, { data }] = useCreateRequestMutation()
     const [description, setDescription] = React.useState('')
     const [inplace, setinPlace] = React.useState(true)
 
     React.useEffect(() => {
-        if (data?.createRequest.success) {
+        const requestId = data?.createRequest.requestId
+        if (!requestId) {
+            requestCtx?.update({ status: RequestStatus.PENDING, requestId })
             navigation.navigate('Root', { screen: 'Help Map' })
         }
     }, [data?.createRequest])

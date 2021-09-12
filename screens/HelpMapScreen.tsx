@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import { StyleSheet, useColorScheme } from 'react-native'
 import { FAB } from 'react-native-elements'
 import MapView from 'react-native-maps'
+import { RequestStatusHandler } from '../components/RequestStatusHandler'
 import { View } from '../components/Themed'
 import {
     useMeQuery,
@@ -60,6 +61,8 @@ export default function HelpMapScreen({
                     onPress={() => navigation.navigate('HelpModal')}
                 />
             )}
+
+            <RequestStatusHandler isDisabledUser={isDisabledUser} />
         </View>
     )
 }

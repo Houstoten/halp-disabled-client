@@ -24,6 +24,11 @@ export type AuthArgs = {
   refreshToken: Scalars['String'];
 };
 
+export type CreateRequestResult = {
+  __typename?: 'CreateRequestResult';
+  requestId: Scalars['String'];
+};
+
 export type HelpMeActionArgs = {
   description: Scalars['String'];
   inplace: Scalars['Boolean'];
@@ -33,7 +38,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   acceptRequest: SuccessResponse;
   approveRequest: SuccessResponse;
-  createRequest: SuccessResponse;
+  createRequest: CreateRequestResult;
   login: SuccessResponse;
   logout: SuccessResponse;
   refreshTokens: SuccessResponse;
@@ -124,7 +129,7 @@ export type CreateRequestMutationVariables = Exact<{
 }>;
 
 
-export type CreateRequestMutation = { __typename?: 'Mutation', createRequest: { __typename?: 'SuccessResponse', success: boolean } };
+export type CreateRequestMutation = { __typename?: 'Mutation', createRequest: { __typename?: 'CreateRequestResult', requestId: string } };
 
 export type LoginMutationVariables = Exact<{
   loginInput: AuthArgs;
@@ -220,7 +225,7 @@ export type ApproveRequestMutationOptions = Apollo.BaseMutationOptions<ApproveRe
 export const CreateRequestDocument = gql`
     mutation createRequest($createRequestInput: HelpMeActionArgs!) {
   createRequest(input: $createRequestInput) {
-    success
+    requestId
   }
 }
     `;
